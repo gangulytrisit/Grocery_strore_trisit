@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Hello {{current_user}}, welcome to your Dashboard</title>
+    <style>
+        body {
+            background-color : #212121;
+            color: white;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        table.table tbody tr td {
+            color: white;
+        }
+
+        /* Customize the "Details" button with a white background and black text */
+        .btn-custom {
+            background-color: rgb(69, 26, 239);
+            color: rgb(255, 255, 255);
+        }
+
+        /* Products grouped by category */
+        .category-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .category-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            flex-basis: calc(33.33% - 20px); /* Adjust the width as needed */
+            text-align: center;
+            background-color: #333;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .category-box h3 {
+            font-size: 18px;
+        }
+
+        .category-box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .category-box li {
+            margin: 10px 0;
+        }
+
+        .category-box a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .buy-button {
+            display: block;
+            margin-top: 5px;
+            background-color: #007bff; /* Button background color */
+            color: #fff; /* Text color */
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .buy-button:hover {
+            background-color: #0056b3; /* Hover background color */
+        }
+
+        /* Full-screen search bar */
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            border: 1px solid #ccc;
+            color: #fff;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        /* Category dropdown */
+        .category-dropdown {
+            width: 100%;
+            padding: 5px;
+            background-color: #333;
+            border: 1px solid #ccc;
+            color: #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Welcome Back, {{current_user}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link btn btn-danger font-weight-bold" href="/user_cart/{{ user_id }}">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/order_history/{{ user_id }}">Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<h1 class="text-center">Hello {{current_user}},Welcome to your Dashboard</h1>
+
+<br>
+
+<div class="container">
+  <h1 style="font-size: 35px; color: rgb(237, 119, 237);">Search here:-</h1>
+
+
+ 
+
+<div class="search-bar-container">
+    <form method="POST" action="/search_pro" class="d-flex flex-column align-items-center">
+      <!-- Category dropdown -->
+      <select name="category" class="category-dropdown">
+        <option value="">Select a Category</option>
+        {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+  
+      <!-- Price range inputs -->
+      <div class="price-range">
+        <label for="min_price">Min Price:</label>
+        <input type="text" name="min_price" id="min_price" placeholder="Min Price">
+  
+        <label for="max_price">Max Price:</label>
+        <input type="text" name="max_price" id="max_price" placeholder="Max Price">
+      </div>
+  
+      <!-- Product name search -->
+      <input type="text" name="search_query" class="search-bar" placeholder="Search for products">
+  
+      <button type="submit" class="btn btn-primary" style="background-color: rgb(32, 163, 9); font-weight: bold;">Search</button>
+    </form>
+  </div>
+  
+
+
+
+    <br>
+
+    <!-- Products grouped by category -->
+
+
+
+<h2>Products by Category</h2>
+<div class="category-container">
+    {% for category in categories %}
+        <div class="category-box">
+            <img src="https://static.blog.bolt.eu/LIVE/wp-content/uploads/2022/04/30135418/grocery-list-1024x536.jpg" alt="{{ category.name }}" style="max-width: 100%;">
+            <h3 style="color: rgb(240, 136, 72); font-style: italic; font-size: 25px;">{{ category.name }}</h3>
+        
+            <ul>
+                {% for product in category.products %}
+                    <!-- Modify the product item section -->
+                    <li class="product-item">
+                        <a href="#" , style="color: rgb(246, 148, 204); font-size: 19px;"><b>{{ product.name }}</b></a>
+                        <p>Price: {{ product.rate_per_unit }}/-</p>
+                        
+                        {% if product.unit_left > 0 %}
+                            <p>Unit Left: {{ product.unit_left }}</p>
+                            <!-- Add to Cart form -->
+                            <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST" class="product-unit">
+                                <input type="number" name="unit" value="1" min="1" max="{{ product.unit_left }}" required>
+                                <input type="submit" value="Add to Cart" class="btn btn-success" style="background-color: green;">
+                            </form>
+                        {% else %}
+                            <p style="color: rgb(246, 81, 81); font-size: 22px; font-weight: bold;">Out of Stock</p>
+                            <!-- Display a disabled button when out of stock -->
+                            <button class="btn btn-secondary" disabled>Add to Cart</button>
+                        {% endif %}
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+
+
+
+<br>
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+<!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+-->
+</body>
+</html>
+
+
+
+
+

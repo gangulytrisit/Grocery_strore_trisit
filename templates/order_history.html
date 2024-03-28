@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>{{ current_user.username }} Checkout page</title>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Hello,  {{current_user.username}}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/user_dashboard">User Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<h1 class="text-center">Please checkout, {{ current_user.username }}</h1>
+
+<br>
+<br>
+
+<div class="container">
+    <div class="text-center">
+        <h2>User Information</h2>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th style="color: rgb(230, 104, 230);">Name:</th>
+                    <td style="color: white;">{{ current_user.username }}</td>
+                </tr>
+                <tr>
+                    <th style="color: rgb(230, 104, 230);">Email:</th>
+                    <td style="color: white;">{{ current_user.email }}</td>
+                </tr>
+                <!-- Add more user information fields here if needed -->
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="text-center"> Past Order Details</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="color: rgb(230, 104, 230);">Order ID</th>
+                <th style="color: rgb(230, 104, 230)">Product</th>
+                <th style="color: rgb(230, 104, 230)">Quantity Ordered</th>
+                <th style="color: rgb(230, 104, 230)">Total Price</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td style="color: white;">{{ order.order_id }}</td>
+                <td style="color: white;">{{ order.Product_name }}</td>
+                <td style="color: white;">{{ order.Product_unit }}</td>
+                <td style="color: white;">{{ order.Product_price }}</td>  
+           
+                
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<br>
+<br>
+<br>
+
+<div class="technical-support d-flex justify-content-center">
+    <p style="font-size: 20px;">For technical errors, call technical support at: +91XXXXXXXX </p>
+</div>
+
+    
+</div>
+
+<!-- ... (remaining HTML code) ... -->
+
+<!-- Optional JavaScript; choose one of the two! -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+</body>
+<style>
+    body {
+      background-color : #212121;
+      color: white
+    }
+</style>
+</html>
